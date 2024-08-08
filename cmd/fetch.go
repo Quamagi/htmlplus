@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -15,9 +16,15 @@ func FetchCommand(attributes string, successContent, errorContent string) string
 	method := attrMap["method"]
 	responseType := attrMap["responseType"]
 	resultName := attrMap["result"]
+	timerStr := attrMap["timer"]
 	limit := 0
 	if limitStr, exists := attrMap["limit"]; exists {
 		limit, _ = strconv.Atoi(limitStr)
+	}
+
+	timer := 0
+	if timerStr != "" {
+		timer, _ = strconv.Atoi(timerStr)
 	}
 
 	var wg sync.WaitGroup
@@ -97,6 +104,31 @@ func FetchCommand(attributes string, successContent, errorContent string) string
 		return errorContent
 	}
 
-	// Ahora que los datos están listos, procesamos el contenido de on-success
-	return ProcessCustomTags(successContent)
+	// Generar el contenido HTML procesado
+	successHTML := ProcessCustomTags(successContent)
+
+	// Incluir el script de actualización si timer está presente
+	if timer > 0 {
+		successHTML += fmt.Sprintf(`
+			<script>
+				setInterval(function() {
+					fetch("%s", { method: "%s" })
+						.then(response => response.json())
+						.then(data => {
+							// Actualizar los elementos en la página
+							document.querySelectorAll("[data-update='%s']").forEach(function(element) {
+								var key = element.getAttribute('data-key');
+								var value = data[0][key];
+								element.innerText = value;
+							});
+						})
+						.catch(error => {
+							console.error('Error fetching data:', error);
+						});
+				}, %d);
+			</script>
+		`, url, method, resultName, timer*1000)
+	}
+
+	return successHTML
 }

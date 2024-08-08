@@ -11,18 +11,18 @@
     <div class="row">
         <div class="col-12">
             <h1 class="text-center">Ethereum Price</h1>
-            <fetch url="https://api.coinlore.net/api/ticker/?id=80" method="GET" responseType="json" result="ethData">
+            <fetch url="https://api.coinlore.net/api/ticker/?id=80" method="GET" responseType="json" result="ethData" timer="10">
                 <on-success>
                     <div class="alert alert-success" role="alert">
                         Data fetched successfully!
                     </div>
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title"><print name="ethData.0.name"></print> (<print name="ethData.0.symbol"></print>)</h5>
-                            <p class="card-text">Price: $<print name="ethData.0.price_usd"></print></p>
-                            <p class="card-text">Market Cap: $<print name="ethData.0.market_cap_usd"></print></p>
-                            <p class="card-text">Volume 24h: $<print name="ethData.0.volume24"></print></p>
-                            <p class="card-text">Change (24h): <print name="ethData.0.percent_change_24h"></print>%</p>
+                            <h5 class="card-title" data-update="ethData" data-key="name"><print name="ethData.0.name"></print> (<print name="ethData.0.symbol"></print>)</h5>
+                            <p class="card-text">Price: $<span data-update="ethData" data-key="price_usd"><print name="ethData.0.price_usd"></print></span></p>
+                            <p class="card-text">Market Cap: $<span data-update="ethData" data-key="market_cap_usd"><print name="ethData.0.market_cap_usd"></print></span></p>
+                            <p class="card-text">Volume 24h: $<span data-update="ethData" data-key="volume24"><print name="ethData.0.volume24"></print></span></p>
+                            <p class="card-text">Change (24h): <span data-update="ethData" data-key="percent_change_24h"><print name="ethData.0.percent_change_24h"></print></span>%</p>
                         </div>
                     </div>
                 </on-success>

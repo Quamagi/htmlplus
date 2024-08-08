@@ -16,7 +16,7 @@ type TemplateData struct {
 }
 
 // CommandHandler handles the execution of custom commands within custom HTML tags
-func CommandHandler(w http.ResponseWriter, r *http.Request) {
+func CommandHandler(w http.ResponseWriter, r *http.Request, fileName string) {
 	var wg sync.WaitGroup
 	readChan := make(chan string)
 	processChan := make(chan string)
@@ -27,7 +27,7 @@ func CommandHandler(w http.ResponseWriter, r *http.Request) {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		content, err := ioutil.ReadFile("templates/index.html")
+		content, err := ioutil.ReadFile(fileName)
 		if err != nil {
 			errorChan <- err
 			close(readChan)
@@ -98,7 +98,13 @@ func CommandHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", CommandHandler)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		CommandHandler(w, r, "templates/index.html")
+	})
+	http.HandleFunc("/formulario.html", func(w http.ResponseWriter, r *http.Request) {
+		CommandHandler(w, r, "templates/formulario.html")
+	})
+
 	log.Println("Starting server on :8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatalf("Could not start server: %s\n", err.Error())
