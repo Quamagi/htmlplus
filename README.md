@@ -119,8 +119,6 @@ Este proyecto está bajo la licencia MIT. Consulta el archivo `LICENSE` para obt
 
 ### Contacto
 
-Para cualquier consulta o comentario, puedes contactar al desarrollador en `tu-email@example.com`.
+Para cualquier consulta o comentario, puedes contactar al desarrollador en `claciudad@gmail.com`.
 
 ---
-
-Este `README.md` proporciona una descripción completa del proyecto, incluyendo su estructura, instalación, uso y cómo añadir nuevos comandos. Ajusta cualquier detalle específico según tus necesidades.
