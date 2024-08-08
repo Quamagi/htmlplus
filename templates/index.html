@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Example of Fetching Ethereum Price</title>
+    <!-- Bootstrap CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center">Ethereum Price</h1>
+            <fetch url="https://api.coinlore.net/api/ticker/?id=80" method="GET" responseType="json" result="ethData">
+                <on-success>
+                    <div class="alert alert-success" role="alert">
+                        Data fetched successfully!
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><print name="ethData.0.name"></print> (<print name="ethData.0.symbol"></print>)</h5>
+                            <p class="card-text">Price: $<print name="ethData.0.price_usd"></print></p>
+                            <p class="card-text">Market Cap: $<print name="ethData.0.market_cap_usd"></print></p>
+                            <p class="card-text">Volume 24h: $<print name="ethData.0.volume24"></print></p>
+                            <p class="card-text">Change (24h): <print name="ethData.0.percent_change_24h"></print>%</p>
+                        </div>
+                    </div>
+                </on-success>
+                <on-error>
+                    <div class="alert alert-danger" role="alert">
+                        Failed to fetch data.
+                    </div>
+                </on-error>
+            </fetch>
+        </div>
+    </div>
+</body>
+</html>
